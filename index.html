@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classificação Multimodal de Coleções NFT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand" onclick="toggleSidebar()" title="Expandir/Recolher Menu">
+        <div class="logo-slot">
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="logo-fallback" style="display:none;">LOGO</div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">NFT Classifier</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-view="home" onclick="showView('home', this)">
+        <span class="nav-mark">◆</span> <span class="nav-text">Início</span>
+      </button>
+      <button class="nav-item" data-view="phase1" onclick="showView('phase1', this)">
+        <span class="nav-mark">◆</span> <span class="nav-text">Description only</span>
+      </button>
+      <button class="nav-item" data-view="phase2" onclick="showView('phase2', this)">
+        <span class="nav-mark">◆</span> <span class="nav-text">Description + Statistical Data</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div id="loading-status" class="status-pill"><span class="nav-text">Loading models…</span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section id="view-home" class="view active">
+      <div class="hero">
+        <p class="eyebrow">Welcome</p>
+        <h1>Simply describe the collection or supplement it with market data.</h1>
+      </div>
+
+      <div class="option-grid">
+        <button class="option-card" onclick="showView('phase1', document.querySelector('[data-view=phase1]'))">
+          <h3>Description only</h3>
+          <p>Enter the description of the collection</p>
+          <span class="option-cta">Classification via Description →</span>
+        </button>
+        <button class="option-card" onclick="showView('phase2', document.querySelector('[data-view=phase2]'))">
+          <h3>Description and Statistical Data</h3>
+          <p>Combine the description with market data.</p>
+          <span class="option-cta">Classification via Description and Statistical Data →</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="view-phase1" class="view">
+      <header class="view-header">
+        <h2>Classification by Description</h2>
+        <p class="view-sub">Describe the collection in a few sentences. The more detailed the description, the better the classification will be.</p>
+      </header>
+
+      <div class="panel">
+        <div class="field">
+          <label for="desc-1">Collection Description</label>
+          <textarea id="desc-1" rows="6" minlength="5" maxlength="2000" required placeholder="E.g., A collection of 10,000 generative pixel art avatars featuring rare retro accessory traits..."></textarea>
+        </div>
+        <div id="error-phase1" style="color: #dc2626; font-size: 0.85rem; margin-bottom: 0.8rem; display: none; font-weight: 600;"></div>
+        
+        <button class="btn" id="btn-1" onclick="classify('phase1')" disabled>Classify</button>
+      </div>
+
+      <div class="result-block" data-owner="phase1">
+        <div id="result-phase1" class="result-box">
+          <span class="result-label">Category</span>
+          <span id="category-output-phase1" class="result-value"></span>
+        </div>
+        <div id="prob-details-phase1" class="prob-details">
+          <h4>Confidence</h4>
+          <ul id="prob-list-phase1"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-phase2" class="view">
+      <header class="view-header">
+        <h2>Classification by Description and Statistical Data</h2>
+        <p class="view-sub">Match the description with the collection market data.</p>
+      </header>
+
+      <div class="panel">
+        <div class="field">
+          <label for="desc-2">Collection Description</label>
+          <textarea id="desc-2" rows="4" minlength="5" maxlength="2000" required placeholder="E.g., A collection of 10,000 generative pixel art avatars featuring rare retro accessory traits..."></textarea>
+        </div>
+
+        <div class="grid-inputs">
+          <div class="field"><label for="v-vol">Total Volume</label><input type="number" id="v-vol" value="0" min="0"></div>
+          <div class="field"><label for="v-sales">Total Sales</label><input type="number" id="v-sales" value="0" min="0"></div>
+          <div class="field"><label for="v-sup">Supply</label><input type="number" id="v-sup" value="0" min="0"></div>
+          <div class="field"><label for="v-own">Owners</label><input type="number" id="v-own" value="0" min="0"></div>
+          <div class="field"><label for="v-avg">Average Price</label><input type="number" id="v-avg" value="0" min="0"></div>
+          <div class="field"><label for="v-mcap">Market cap</label><input type="number" id="v-mcap" value="0" min="0"></div>
+          <div class="field"><label for="v-tr">Traits</label><input type="number" id="v-tr" value="0" min="0"></div>
+          <div class="field"><label for="v-ed">Editores</label><input type="number" id="v-ed" value="0" min="0"></div>
+          <div class="field"><label for="v-floor">Floor price</label><input type="number" id="v-floor" value="0" min="0"></div>
+        </div>
+
+        <div id="error-phase2" style="color: #dc2626; font-size: 0.85rem; margin-bottom: 0.8rem; display: none; font-weight: 600;"></div>
+        
+        <button class="btn" id="btn-2" onclick="classify('phase2')" disabled>Classify</button>
+      </div>
+
+      <div class="result-block" data-owner="phase2">
+        <div id="result-phase2" class="result-box">
+          <span class="result-label">Category</span>
+          <span id="category-output-phase2" class="result-value"></span>
+        </div>
+        <div id="prob-details-phase2" class="prob-details">
+          <h4>Confidence</h4>
+          <ul id="prob-list-phase2"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
