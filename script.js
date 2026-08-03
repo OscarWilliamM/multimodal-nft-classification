@@ -35,6 +35,9 @@ async function initializeModels() {
         statusEl.classList.add('ready');
         document.getElementById('btn-1').disabled = false;
         document.getElementById('btn-2').disabled = false;
+        setTimeout(() => {
+            statusEl.style.display = 'none';
+        }, 3000);
     } catch (error) {
         console.error("Error loading models:", error);
         statusEl.querySelector('.nav-text').innerText = 'Error loading models (F12)';
