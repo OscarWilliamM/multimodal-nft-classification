@@ -250,7 +250,7 @@ textarea:focus-visible {
   font-weight: 600;
   line-height: 1.25;
   margin: 0 0 1rem;
-  max-width: 120%;
+  max-width: 40ch;
 }
 
 .hero-sub {
