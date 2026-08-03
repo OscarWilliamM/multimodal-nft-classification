@@ -20,6 +20,7 @@
 
 * { box-sizing: border-box; }
 
+html {font-size: 125%;}
 body {
   margin: 0;
   background: var(--bg);
