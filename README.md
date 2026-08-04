@@ -21,7 +21,7 @@ The system allows classifying NFT collections by cross-referencing semantic data
 
 The application operates entirely online, requiring no local installation or environment configuration by the end user.
 
-- Access the application's deployment link: `https://oscarwilliamm.github.io/multimodal-nft-classification/`
+- Access the application's deployment link: `https://oscarwilliamm.github.io/nft-classification/`
 - Wait for the secure download of the models to the browser's local cache. The status in the sidebar footer will change to **"Ready Models"**.
 - Select the desired inference mode (text only or text + statistical data).
 - Enter the NFT collection information into the text boxes and numerical inputs.
