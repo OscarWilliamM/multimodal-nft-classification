@@ -70,8 +70,8 @@ window.classify = async function(phase) {
             return;
         }
 
-        const detectedLang = franc(text);
-        if (detectedLang !== 'eng') {
+        const detectedLang = franc(text, { minLength: 5 }); 
+        if (detectedLang !== 'eng' && detectedLang !== 'und') {
             errorMsg.innerText = "Suggestion: For a more accurate classification, please provide the description in English.";
             errorMsg.style.color = '#d97706'; 
             errorMsg.style.display = 'block';
