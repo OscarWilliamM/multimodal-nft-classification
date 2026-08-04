@@ -377,6 +377,7 @@ textarea:focus-visible {
   flex-direction: column;
   gap: 0.4rem;
   margin-bottom: 1.1rem;
+  min-width: 0;
 }
 
 .field label {
@@ -388,6 +389,9 @@ textarea:focus-visible {
 }
 
 input, textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: var(--bg-panel);
   border: 1px solid var(--line-strong);
   border-radius: 6px;
@@ -403,8 +407,10 @@ input::placeholder, textarea::placeholder {
 
 .grid-inputs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 1rem 1.1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .btn {
