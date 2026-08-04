@@ -69,8 +69,8 @@ window.classify = async function(phase) {
             return;
         }
 
-        const ptAccents = /[ãõçêôáéíóú]/i;
-        const ptWords = /\b(que|não|são|uma|você|coleção|projeto|arte|jogo|este|esta|com|para)\b/i;
+        const ptAccents = /[ãõçêôáéíóúà]/i;
+        const ptWords = /\b(que|uma|para|com|projeto|arte|jogo|este|esta|esse|essa|isso|sobre|aqui|muito|mais|seus|suas|tem|como|onde|quando|colecao|teste)\b/i;
         
         if (ptAccents.test(text) || ptWords.test(text)) {
             errorMsg.innerText = "Suggestion: For a more accurate classification, please provide the description in English.";
