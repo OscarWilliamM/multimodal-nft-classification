@@ -51,7 +51,6 @@ window.classify = async function(phase) {
     const probListElement = document.getElementById(`prob-list-${phase}`);
     const errorMsg = document.getElementById(`error-${phase}`);
 
-    // Reseta o estado da mensagem e a cor para o vermelho padrão de erro
     errorMsg.style.display = 'none';
     errorMsg.style.color = '#dc2626';
 
@@ -64,20 +63,18 @@ window.classify = async function(phase) {
             text = document.getElementById('desc-2').value.trim();
         }
 
-        // 1. Validação de bloqueio (Erro)
         if (text.length < 5) {
             errorMsg.innerText = "The description must contain at least 5 valid characters";
             errorMsg.style.display = 'block';
             return;
         }
 
-        // 2. Validação de idioma (Aviso/Sugestão - Não bloqueia)
         const ptAccents = /[ãõçêôáéíóú]/i;
         const ptWords = /\b(que|não|são|uma|você|coleção|projeto|arte|jogo|este|esta|com|para)\b/i;
         
         if (ptAccents.test(text) || ptWords.test(text)) {
             errorMsg.innerText = "Suggestion: For a more accurate classification, please provide the description in English.";
-            errorMsg.style.color = '#d97706'; // Muda a cor para um tom de alerta (laranja)
+            errorMsg.style.color = '#d97706'; 
             errorMsg.style.display = 'block';
         }
 
