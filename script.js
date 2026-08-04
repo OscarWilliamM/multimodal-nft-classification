@@ -1,4 +1,5 @@
 import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+import { franc } from 'https://esm.sh/franc@6';
 
 env.allowLocalModels = false;
 
@@ -69,10 +70,8 @@ window.classify = async function(phase) {
             return;
         }
 
-        const ptAccents = /[ãõçêôáéíóúà]/i;
-        const ptWords = /\b(que|uma|para|com|projeto|arte|jogo|este|esta|esse|essa|isso|sobre|aqui|muito|mais|seus|suas|tem|como|onde|quando|colecao|teste)\b/i;
-        
-        if (ptAccents.test(text) || ptWords.test(text)) {
+        const detectedLang = franc(text);
+        if (detectedLang !== 'eng') {
             errorMsg.innerText = "Suggestion: For a more accurate classification, please provide the description in English.";
             errorMsg.style.color = '#d97706'; 
             errorMsg.style.display = 'block';
