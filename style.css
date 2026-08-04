@@ -407,7 +407,7 @@ input::placeholder, textarea::placeholder {
 
 .grid-inputs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr)); 
   gap: 1rem 1.1rem;
   width: 100%;
   box-sizing: border-box;
